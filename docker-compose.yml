@@ -15,16 +15,16 @@ services:
     container_name: bff-web-sockets-service
     networks:
       - mynet
-  mobile-app:
-    image: lohika/bff-mobile-app:1.0
-    container_name: bff-mobile-app
-    networks:
-      - mynet
-  client-app:
-    image: lohika/bff-client-app:1.0
-    container_name: bff-client-app
-    networks:
-      - mynet
+#  mobile-app:
+#    image: lohika/bff-mobile-app:1.0
+#    container_name: bff-mobile-app
+#    networks:
+#      - mynet
+#  client-app:
+#    image: lohika/bff-client-app:1.0
+#    container_name: bff-client-app
+#    networks:
+#      - mynet
   frontend:
     image: lohika/bff-frontend:1.0
     container_name: bff-frontend

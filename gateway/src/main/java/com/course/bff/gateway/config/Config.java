@@ -9,14 +9,18 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class Config {
 
-    @Value("${author.url")
+    @Value("${author.url}")
     private String authorUrl;
 
-    @Value("${book.url")
+    @Value("${book.url}")
     private String bookUrl;
 
-    @Value("${frontend.url")
+    @Value("${frontend.url}")
     private String frontendUrl;
+
+    @Value("${websocket.url}")
+    private String websocketUrl;
+
 
     @Bean
     public RouteLocator routeLocator(RouteLocatorBuilder builder) {
@@ -30,6 +34,9 @@ public class Config {
                 .route(p -> p
                         .path("/api/v1/details")
                         .uri(frontendUrl))
+                .route(p -> p
+                        .path("/push")
+                        .uri(websocketUrl))
                 .build();
     }
 }

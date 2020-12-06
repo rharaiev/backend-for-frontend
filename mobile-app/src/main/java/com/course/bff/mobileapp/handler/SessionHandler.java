@@ -3,6 +3,7 @@ package com.course.bff.mobileapp.handler;
 import com.course.bff.mobileapp.client.ApiClient;
 import com.course.bff.mobileapp.item.AuthorItem;
 import com.course.bff.mobileapp.item.BookItem;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,10 @@ import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -35,12 +40,22 @@ public class SessionHandler extends StompSessionHandlerAdapter {
         log.error("Got an exception", exception);
     }
 
-    @SneakyThrows
     @Override
+    @SneakyThrows
+    @SuppressWarnings("unchecked")
     public void handleFrame(StompHeaders headers, Object payload) {
-        BookItem book = objectMapper.readValue((String) payload, BookItem.class);
-        AuthorItem author = apiClient.getAuthor(book.getAuthorId());
+        Map<String, Object> result = apiClient.getDetails();
+        List<BookItem> books = objectMapper.convertValue(result.get("books"), new TypeReference<List<BookItem>>() {
+        });
+        List<AuthorItem> authors = objectMapper.convertValue(result.get("authors"), new TypeReference<List<AuthorItem>>() {
+        });
 
-        log.info("Book title: {}. Author name: {}", book.getTitle(), author.getLastName());
+        books.forEach(book -> {
+            Optional<String> authorName = authors.stream()
+                    .filter(author -> author.getId().equals(book.getAuthorId()))
+                    .map(AuthorItem::getLastName)
+                    .findFirst();
+            log.info("Book: {}. Author: {}", book.getTitle(), authorName.orElse(null));
+        });
     }
 }
