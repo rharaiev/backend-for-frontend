@@ -35,5 +35,12 @@ services:
       - 8084:8080
     networks:
       - mynet
+  frontend:
+    image: lohika/bff-frontend:1.0
+    container_name: bff-frontend
+    ports:
+      - 8085:8080
+    networks:
+      - mynet
 networks:
   mynet:
