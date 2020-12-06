@@ -1,4 +1,4 @@
-package com.course.bff.frontapp.item;
+package com.course.bff.clientapp.item;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -8,12 +8,10 @@ import java.util.UUID;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class BookItem {
+public class AuthorItem {
     UUID id;
-
-    String title;
-
-    int pages;
-
-    UUID authorId;
+    String firstName;
+    String lastName;
+    String address;
+    String language;
 }

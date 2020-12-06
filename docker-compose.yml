@@ -28,9 +28,9 @@ services:
       - 8083:8080
     networks:
       - mynet
-  front-app:
-    image: lohika/bff-front-app:1.0
-    container_name: bff-front-app
+  client-app:
+    image: lohika/bff-client-app:1.0
+    container_name: bff-client-app
     ports:
       - 8084:8080
     networks:

@@ -1,8 +1,8 @@
-package com.course.bff.frontapp.handler;
+package com.course.bff.clientapp.handler;
 
-import com.course.bff.frontapp.item.AuthorItem;
-import com.course.bff.frontapp.client.ApiClient;
-import com.course.bff.frontapp.item.BookItem;
+import com.course.bff.clientapp.item.AuthorItem;
+import com.course.bff.clientapp.client.ApiClient;
+import com.course.bff.clientapp.item.BookItem;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

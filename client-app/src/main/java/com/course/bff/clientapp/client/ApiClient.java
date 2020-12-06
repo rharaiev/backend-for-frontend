@@ -1,7 +1,7 @@
-package com.course.bff.frontapp.client;
+package com.course.bff.clientapp.client;
 
-import com.course.bff.frontapp.item.AuthorItem;
-import com.course.bff.frontapp.item.BookItem;
+import com.course.bff.clientapp.item.AuthorItem;
+import com.course.bff.clientapp.item.BookItem;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpEntity;

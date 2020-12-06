@@ -1,7 +1,7 @@
-package com.course.bff.frontapp;
+package com.course.bff.clientapp;
 
-import com.course.bff.frontapp.client.ApiClient;
-import com.course.bff.frontapp.handler.SessionHandler;
+import com.course.bff.clientapp.client.ApiClient;
+import com.course.bff.clientapp.handler.SessionHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
