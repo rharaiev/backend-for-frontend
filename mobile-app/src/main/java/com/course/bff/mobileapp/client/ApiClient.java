@@ -13,7 +13,7 @@ import java.util.Map;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ApiClient {
-    private static final String DETAILS_URL = "http://localhost:8080/api/v1/details/";
+    private static final String DETAILS_URL = "http://localhost:8081/api/v1/details/";
     private static final String AUTH_TOKEN = "abc";
 
     RestTemplate restTemplate;

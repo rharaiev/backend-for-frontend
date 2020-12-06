@@ -19,7 +19,7 @@ import org.springframework.web.socket.messaging.WebSocketStompClient;
 public class Application implements CommandLineRunner {
 
     private static final String topic = "/topic/messages";
-    private static final String URL = "ws://localhost:8080/push";
+    private static final String URL = "ws://localhost:8081/push";
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
