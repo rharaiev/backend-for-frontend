@@ -6,42 +6,27 @@ import com.course.bff.authors.responses.AuthorResponse;
 import com.course.bff.authors.services.AuthorService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.asynchttpclient.AsyncHttpClient;
-import org.asynchttpclient.DefaultAsyncHttpClientConfig;
-import org.asynchttpclient.Dsl;
-import org.asynchttpclient.ListenableFuture;
-import org.asynchttpclient.Request;
-import org.asynchttpclient.RequestBuilder;
-import org.asynchttpclient.Response;
-import org.asynchttpclient.util.HttpConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.concurrent.ExecutionException;
+import java.util.*;
 
 @RestController
 @RequestMapping("api/v1/authors")
 public class AuthorController {
     private final static Logger logger = LoggerFactory.getLogger(AuthorController.class);
     private final AuthorService authorService;
+    private final RedisTemplate<String, Object> redisTemplate;
 
-    @Value("${notification.url}")
-    private String notificationUrl;
+    @Value("${redis.topic}")
+    private String redisTopic;
 
-    public AuthorController(AuthorService authorService) {
+    public AuthorController(AuthorService authorService, RedisTemplate<String, Object> redisTemplate) {
         this.authorService = authorService;
+        this.redisTemplate = redisTemplate;
     }
 
     @GetMapping()
@@ -78,20 +63,8 @@ public class AuthorController {
 
 
     private void sendPushNotification(AuthorResponse authorResponse) {
-        DefaultAsyncHttpClientConfig.Builder clientBuilder = Dsl.config().setConnectTimeout(500);
-        AsyncHttpClient client = Dsl.asyncHttpClient(clientBuilder);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        Request socketRequest = new RequestBuilder(HttpConstants.Methods.POST)
-                .setUrl(notificationUrl)
-                .setBody(gson.toJson(authorResponse))
-                .build();
-
-        ListenableFuture<Response> socketFuture = client.executeRequest(socketRequest);
-        try {
-            socketFuture.get();
-        } catch (InterruptedException | ExecutionException e) {
-            logger.error("Push Notification Error", e);
-        }
+        redisTemplate.convertAndSend(redisTopic, gson.toJson(authorResponse));
     }
 
     private AuthorResponse createAuthorResponse(Author author) {
