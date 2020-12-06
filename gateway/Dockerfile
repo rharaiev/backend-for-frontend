@@ -1,7 +1,7 @@
 # Means to build our image upon java:12 image from Docker Hub.
 FROM openjdk:12-alpine
 # We add a file from the local file system, naming it “app.jar.” The renaming isn't necessary, just an option available
-ADD target/frontend-0.0.1.jar app.jar
+ADD target/gateway-0.0.1.jar app.jar
 # We state that we want to open port 8080 on the container﻿
 EXPOSE 8080
 # We run a command on the system to “touch” the file. This ensures a file modification date on the app.jar file

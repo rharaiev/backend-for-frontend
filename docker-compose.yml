@@ -3,43 +3,38 @@ services:
   authors:
     image: lohika/bff-authors-service:1.0
     container_name: bff-authors-service
-    ports:
-      - 8081:8080
     networks:
       - mynet
   books:
     image: lohika/bff-books-service:1.0
     container_name: bff-books-service
-    ports:
-      - 8082:8080
     networks:
       - mynet
   web-sockets:
     image: lohika/bff-web-sockets-service:1.0
     container_name: bff-web-sockets-service
-    ports:
-      - 8080:8080
     networks:
       - mynet
   mobile-app:
     image: lohika/bff-mobile-app:1.0
     container_name: bff-mobile-app
-    ports:
-      - 8083:8080
     networks:
       - mynet
   client-app:
     image: lohika/bff-client-app:1.0
     container_name: bff-client-app
-    ports:
-      - 8084:8080
     networks:
       - mynet
   frontend:
     image: lohika/bff-frontend:1.0
     container_name: bff-frontend
+    networks:
+      - mynet
+  gateway:
+    image: lohika/bff-gateway:1.0
+    container_name: bff-gateway
     ports:
-      - 8085:8080
+      - 8080:8080
     networks:
       - mynet
   redis:
