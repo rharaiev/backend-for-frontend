@@ -4,15 +4,10 @@ import com.course.bff.books.models.Book;
 import com.course.bff.books.requests.CreateBookCommand;
 import com.course.bff.books.responses.AuthorResponse;
 import com.google.gson.Gson;
-import org.asynchttpclient.AsyncHttpClient;
-import org.asynchttpclient.DefaultAsyncHttpClientConfig;
-import org.asynchttpclient.Dsl;
-import org.asynchttpclient.ListenableFuture;
-import org.asynchttpclient.Request;
-import org.asynchttpclient.RequestBuilder;
-import org.asynchttpclient.Response;
+import org.asynchttpclient.*;
 import org.asynchttpclient.util.HttpConstants;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -24,10 +19,11 @@ import java.util.concurrent.ExecutionException;
 
 @Component
 public class BookService {
+    private final ArrayList<Book> books;
     @Value("${authors.url}")
     private String authorsUrl;
-
-    private final ArrayList<Book> books;
+    @Value("${authorization.token}")
+    private String token;
 
     public BookService() {
         books = new ArrayList<>();
@@ -61,6 +57,7 @@ public class BookService {
         AsyncHttpClient client = Dsl.asyncHttpClient(clientBuilder);
         Request socketRequest = new RequestBuilder(HttpConstants.Methods.GET)
                 .setUrl(authorsUrl + authorId.toString())
+                .setHeader(HttpHeaders.AUTHORIZATION, token)
                 .build();
 
         ListenableFuture<Response> socketFuture = client.executeRequest(socketRequest);
